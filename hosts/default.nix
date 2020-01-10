@@ -13,6 +13,8 @@ let
       system = "x86_64-linux";
 
       specialArgs.usr = { inherit utils; };
+      specialArgs.nurModules = args.nur.nixosModules;
+      specialArgs.nurOverlays = args.nur.overlays;
 
       modules = let
         inherit (home.nixosModules) home-manager;
@@ -29,7 +31,7 @@ let
 
           system.configurationRevision = self.rev;
 
-          nixpkgs.overlays = self.overlays;
+          nixpkgs.overlays = self.overlays ++ [ args.nur.overlay ];
         };
 
         local = import "${toString ./.}/${hostName}.nix";
